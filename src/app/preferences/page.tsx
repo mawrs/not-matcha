@@ -8,20 +8,22 @@ import { Preferences } from "@/components/preferences";
 import { useLogin } from "@/components/login-context";
 import { Container } from "@/components/ui";
 
-export default function Home() {
+export default function PreferencesPage() {
   const { signedIn } = useLogin();
   const router = useRouter();
 
   useEffect(() => {
-    if (signedIn) router.replace("/preferences");
+    if (!signedIn) router.replace("/");
   }, [signedIn, router]);
 
-  if (signedIn) return <Preferences />;
+  if (!signedIn) {
+    return (
+      <Container variant="home">
+        <HomeHero />
+        <HomeFooter />
+      </Container>
+    );
+  }
 
-  return (
-    <Container variant="home">
-      <HomeHero />
-      <HomeFooter />
-    </Container>
-  );
+  return <Preferences />;
 }

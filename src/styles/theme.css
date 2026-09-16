@@ -1,0 +1,490 @@
+:root {
+  --theme-brand: var(--p-green-500);
+  --theme-brand-hover: var(--p-green-600);
+  --theme-brand-soft: var(--p-green-400);
+  --theme-brand-muted: var(--p-green-50);
+  --theme-fg: var(--p-ink);
+  --theme-fg-secondary: var(--p-gray-800);
+  --theme-fg-body: var(--p-gray-700);
+  --theme-fg-muted: var(--p-gray-600);
+  --theme-fg-subtle: var(--p-gray-500);
+  --theme-fg-faint: var(--p-gray-400);
+  --theme-fg-quote: var(--p-gray-quote);
+  --theme-fg-check: var(--p-ink-soft);
+  --theme-fg-inverse: var(--p-white);
+  --theme-surface: var(--p-white);
+  --theme-surface-muted: var(--p-gray-100);
+  --theme-surface-subtle: var(--p-gray-50);
+  --theme-surface-disabled: var(--p-gray-200);
+  --theme-surface-brand: var(--p-green-50);
+  --theme-border: var(--p-gray-100);
+  --theme-border-strong: var(--p-gray-200);
+  --theme-border-brand: var(--p-green-100);
+  --theme-accent: var(--p-yellow-500);
+  --theme-send: var(--p-coral-400);
+  --theme-send-hover: var(--p-coral-500);
+  --theme-overlay: var(--p-black-40);
+  --theme-overlay-strong: var(--p-black-50);
+  --theme-avatar: var(--p-avatar);
+  --theme-google-blue: var(--p-google-blue);
+  --theme-google-green: var(--p-google-green);
+  --theme-google-yellow: var(--p-google-yellow);
+  --theme-google-red: var(--p-google-red);
+  --theme-danger: var(--p-danger);
+  --theme-gmail-canvas: var(--p-gmail-canvas);
+  --theme-gmail-search: var(--p-gmail-search);
+  --theme-gmail-compose: var(--p-gmail-compose);
+  --theme-gmail-inbox: var(--p-gmail-inbox);
+  --theme-gmail-stroke: var(--p-gmail-stroke);
+  --theme-gmail-fg: var(--p-gmail-fg);
+  --theme-gmail-fg-strong: var(--p-gmail-fg-strong);
+  --theme-gmail-fg-body: var(--p-gmail-fg-body);
+  --theme-gmail-fg-nav: var(--p-gmail-fg-nav);
+  --theme-gmail-fg-muted: var(--p-gmail-fg-muted);
+  --theme-gmail-fg-faint: var(--p-gmail-fg-faint);
+  --theme-gmail-fg-logo: var(--p-gmail-fg-logo);
+  --theme-gmail-chip: var(--p-gmail-chip);
+  --theme-gmail-pill: var(--p-gmail-pill);
+  --theme-gmail-yes: var(--p-gmail-yes);
+  --theme-gmail-yes-bg: var(--p-gmail-yes-bg);
+  --theme-gmail-yes-hover: var(--p-gmail-yes-hover);
+  --theme-gmail-no: var(--p-gmail-no);
+  --theme-gmail-no-bg: var(--p-gmail-no-bg);
+  --theme-gmail-no-hover: var(--p-gmail-no-hover);
+  --theme-gmail-send-hover: var(--p-gmail-send-hover);
+  --theme-gmail-profile: var(--p-gmail-profile);
+  --theme-gmail-label-cat: var(--p-gmail-label-cat);
+  --theme-gmail-label-team: var(--p-gmail-label-team);
+  --theme-gmail-label-news: var(--p-gmail-label-news);
+  --theme-gmail-label-work: var(--p-gmail-label-work);
+  --theme-gmail-label-personal: var(--p-gmail-label-personal);
+  --theme-gmail-icon: var(--p-gmail-icon);
+  --theme-gmail-font: var(--font-roboto), "Roboto", sans-serif;
+
+  --theme-font: var(--font-jetbrains), "JetBrains Mono", monospace;
+  --theme-text-caption: var(--p-font-xs);
+  --theme-text-note: var(--p-font-note);
+  --theme-text-body: var(--p-font-sm);
+  --theme-text-body-lg: var(--p-font-md);
+  --theme-text-section: var(--p-font-lg);
+  --theme-text-title: var(--p-font-2xl);
+  --theme-text-display-sm: var(--p-font-3xl);
+  --theme-text-display: var(--p-font-4xl);
+  --theme-weight-body: var(--p-weight-normal);
+  --theme-weight-label: var(--p-weight-medium);
+  --theme-weight-emphasis: var(--p-weight-semibold);
+  --theme-weight-title: var(--p-weight-bold);
+  --theme-weight-display: var(--p-weight-extrabold);
+  --theme-leading-display: var(--p-leading-snug);
+  --theme-leading-body: var(--p-leading-relaxed);
+  --theme-leading-normal: var(--p-leading-normal);
+  --theme-tracking-display: var(--p-tracking-tight);
+  --theme-tracking-logo: var(--p-tracking-logo);
+  --theme-tracking-wide: var(--p-tracking-wide);
+
+  --theme-radius-control: var(--p-radius-md);
+  --theme-radius-card: var(--p-radius-lg);
+  --theme-radius-field: var(--p-radius-xl);
+  --theme-radius-action: var(--p-radius-action);
+  --theme-radius-composer: var(--p-radius-2xl);
+  --theme-radius-pill: var(--p-radius-full);
+  --theme-radius-gmail: var(--p-radius-gmail);
+  --theme-radius-gmail-nav: var(--p-radius-gmail-nav);
+  --theme-radius-gmail-compose: var(--p-radius-gmail-compose);
+
+  --theme-space-header-y: var(--p-space-22);
+  --theme-space-header-x: var(--p-space-28);
+  --theme-space-page: var(--p-space-4);
+  --theme-space-page-md: var(--p-space-6);
+  --theme-space-page-lg: var(--p-space-8);
+  --theme-space-prose: var(--p-space-8);
+  --theme-space-hero: var(--p-space-16);
+  --theme-space-footer: var(--p-space-24);
+  --theme-space-footer-lg: var(--p-space-32);
+  --theme-space-tight: var(--p-space-1);
+  --theme-space-nudge: var(--p-space-2);
+  --theme-space-rule: var(--p-space-3);
+  --theme-space-cluster: var(--p-space-2);
+  --theme-space-stack: var(--p-space-4);
+  --theme-space-section: var(--p-space-6);
+  --theme-space-modal-body: var(--p-space-8);
+  --theme-space-modal-footer: var(--p-space-4);
+  --theme-space-modal-close: var(--p-space-4);
+  --theme-space-field-x: var(--p-space-4);
+  --theme-space-field-y: var(--p-space-2-5);
+  --theme-space-field-trail: var(--p-space-12);
+  --theme-space-action-x: var(--p-space-4-5);
+  --theme-space-prefs-x: var(--p-space-22);
+  --theme-space-prefs-y: var(--p-space-14);
+  --theme-space-prefs-bottom: var(--p-space-24);
+  --theme-space-prefs-save: var(--p-space-28);
+
+  --theme-size-caret: var(--p-size-caret);
+  --theme-size-hairline: var(--p-size-hairline);
+  --theme-size-dot: var(--p-size-dot);
+  --theme-size-icon-sm: var(--p-size-icon-sm);
+  --theme-size-icon: var(--p-size-icon);
+  --theme-size-control: var(--p-size-control);
+  --theme-size-avatar-lg: var(--p-size-avatar-lg);
+  --theme-size-account: var(--p-size-account);
+  --theme-size-account-nav: var(--p-size-account-nav);
+  --theme-size-account-label: var(--p-size-account-label);
+  --theme-size-gmail-nav: var(--p-size-gmail-nav);
+  --theme-size-gmail-rail: var(--p-size-gmail-rail);
+  --theme-size-gmail-bar: var(--p-size-gmail-bar);
+  --theme-size-gmail-search: var(--p-size-gmail-search);
+  --theme-size-gmail-compose: var(--p-size-gmail-compose);
+  --theme-size-gmail-compose-h: var(--p-size-gmail-compose-h);
+  --theme-size-gmail-avatar: var(--p-size-gmail-avatar);
+  --theme-size-gmail-tool: var(--p-size-gmail-tool);
+  --theme-size-gmail-mark: var(--p-size-gmail-mark);
+  --theme-size-gmail-logo-w: var(--p-size-gmail-logo-w);
+  --theme-size-gmail-logo-h: var(--p-size-gmail-logo-h);
+  --theme-size-prefs: var(--p-size-prefs);
+  --theme-size-noise: var(--p-size-noise);
+
+  --theme-shadow-composer: var(--p-shadow-composer);
+  --theme-shadow-modal: var(--p-shadow-modal);
+  --theme-stroke-icon: var(--p-stroke-icon);
+  --theme-stroke-strong: var(--p-stroke-strong);
+  --theme-z-overlay: var(--p-z-overlay);
+  --theme-opacity-noise: var(--p-opacity-noise);
+  --theme-duration-fade: var(--p-duration-fade);
+  --theme-duration-quick: var(--p-duration-quick);
+  --theme-scale-press: var(--p-scale-press);
+  --theme-ease-out: var(--p-ease-out);
+}
+
+@theme inline {
+  --color-brand: var(--theme-brand);
+  --color-brand-hover: var(--theme-brand-hover);
+  --color-brand-soft: var(--theme-brand-soft);
+  --color-brand-muted: var(--theme-brand-muted);
+  --color-fg: var(--theme-fg);
+  --color-fg-secondary: var(--theme-fg-secondary);
+  --color-fg-body: var(--theme-fg-body);
+  --color-fg-muted: var(--theme-fg-muted);
+  --color-fg-subtle: var(--theme-fg-subtle);
+  --color-fg-faint: var(--theme-fg-faint);
+  --color-fg-quote: var(--theme-fg-quote);
+  --color-fg-check: var(--theme-fg-check);
+  --color-fg-inverse: var(--theme-fg-inverse);
+  --color-surface: var(--theme-surface);
+  --color-surface-muted: var(--theme-surface-muted);
+  --color-surface-subtle: var(--theme-surface-subtle);
+  --color-surface-disabled: var(--theme-surface-disabled);
+  --color-surface-brand: var(--theme-surface-brand);
+  --color-border: var(--theme-border);
+  --color-border-strong: var(--theme-border-strong);
+  --color-border-brand: var(--theme-border-brand);
+  --color-accent: var(--theme-accent);
+  --color-send: var(--theme-send);
+  --color-send-hover: var(--theme-send-hover);
+  --color-overlay: var(--theme-overlay);
+  --color-overlay-strong: var(--theme-overlay-strong);
+  --color-avatar: var(--theme-avatar);
+  --color-google-blue: var(--theme-google-blue);
+  --color-google-green: var(--theme-google-green);
+  --color-google-yellow: var(--theme-google-yellow);
+  --color-google-red: var(--theme-google-red);
+  --color-danger: var(--theme-danger);
+  --color-gmail-canvas: var(--theme-gmail-canvas);
+  --color-gmail-search: var(--theme-gmail-search);
+  --color-gmail-compose: var(--theme-gmail-compose);
+  --color-gmail-inbox: var(--theme-gmail-inbox);
+  --color-gmail-stroke: var(--theme-gmail-stroke);
+  --color-gmail-fg: var(--theme-gmail-fg);
+  --color-gmail-fg-strong: var(--theme-gmail-fg-strong);
+  --color-gmail-fg-body: var(--theme-gmail-fg-body);
+  --color-gmail-fg-nav: var(--theme-gmail-fg-nav);
+  --color-gmail-fg-muted: var(--theme-gmail-fg-muted);
+  --color-gmail-fg-faint: var(--theme-gmail-fg-faint);
+  --color-gmail-fg-logo: var(--theme-gmail-fg-logo);
+  --color-gmail-chip: var(--theme-gmail-chip);
+  --color-gmail-pill: var(--theme-gmail-pill);
+  --color-gmail-yes: var(--theme-gmail-yes);
+  --color-gmail-yes-bg: var(--theme-gmail-yes-bg);
+  --color-gmail-yes-hover: var(--theme-gmail-yes-hover);
+  --color-gmail-no: var(--theme-gmail-no);
+  --color-gmail-no-bg: var(--theme-gmail-no-bg);
+  --color-gmail-no-hover: var(--theme-gmail-no-hover);
+  --color-gmail-send-hover: var(--theme-gmail-send-hover);
+  --color-gmail-profile: var(--theme-gmail-profile);
+  --color-gmail-label-cat: var(--theme-gmail-label-cat);
+  --color-gmail-label-team: var(--theme-gmail-label-team);
+  --color-gmail-label-news: var(--theme-gmail-label-news);
+  --color-gmail-label-work: var(--theme-gmail-label-work);
+  --color-gmail-label-personal: var(--theme-gmail-label-personal);
+  --color-gmail-icon: var(--theme-gmail-icon);
+
+  --font-sans: var(--theme-font);
+  --font-mono: var(--theme-font);
+  --font-gmail: var(--theme-gmail-font);
+
+  --text-caption: var(--theme-text-caption);
+  --text-caption--line-height: var(--theme-leading-normal);
+  --text-note: var(--theme-text-note);
+  --text-note--line-height: var(--theme-leading-normal);
+  --text-body: var(--theme-text-body);
+  --text-body--line-height: var(--theme-leading-body);
+  --text-body-lg: var(--theme-text-body-lg);
+  --text-body-lg--line-height: var(--theme-leading-normal);
+  --text-section: var(--theme-text-section);
+  --text-section--line-height: var(--theme-leading-normal);
+  --text-gmail-word: var(--p-font-gmail-word);
+  --text-gmail-word--line-height: var(--theme-leading-normal);
+  --text-title: var(--theme-text-title);
+  --text-title--line-height: var(--theme-leading-display);
+  --text-display-sm: var(--theme-text-display-sm);
+  --text-display-sm--line-height: var(--theme-leading-display);
+  --text-display: var(--theme-text-display);
+  --text-display--line-height: var(--theme-leading-display);
+  --text-display--letter-spacing: var(--theme-tracking-display);
+  --text-display--font-weight: var(--theme-weight-display);
+
+  --font-weight-body: var(--theme-weight-body);
+  --font-weight-label: var(--theme-weight-label);
+  --font-weight-emphasis: var(--theme-weight-emphasis);
+  --font-weight-title: var(--theme-weight-title);
+  --font-weight-display: var(--theme-weight-display);
+
+  --tracking-display: var(--theme-tracking-display);
+  --tracking-logo: var(--theme-tracking-logo);
+  --tracking-kicker: var(--theme-tracking-wide);
+
+  --leading-display: var(--theme-leading-display);
+  --leading-body: var(--theme-leading-body);
+
+  --radius-control: var(--theme-radius-control);
+  --radius-card: var(--theme-radius-card);
+  --radius-field: var(--theme-radius-field);
+  --radius-action: var(--theme-radius-action);
+  --radius-composer: var(--theme-radius-composer);
+  --radius-pill: var(--theme-radius-pill);
+  --radius-gmail: var(--theme-radius-gmail);
+  --radius-gmail-nav: var(--theme-radius-gmail-nav);
+  --radius-gmail-compose: var(--theme-radius-gmail-compose);
+
+  --spacing: var(--p-space-unit);
+  --spacing-px: var(--p-space-px);
+  --spacing-header-y: var(--theme-space-header-y);
+  --spacing-header-x: var(--theme-space-header-x);
+  --spacing-page: var(--theme-space-page);
+  --spacing-page-md: var(--theme-space-page-md);
+  --spacing-page-lg: var(--theme-space-page-lg);
+  --spacing-prose: var(--theme-space-prose);
+  --spacing-hero: var(--theme-space-hero);
+  --spacing-footer: var(--theme-space-footer);
+  --spacing-footer-lg: var(--theme-space-footer-lg);
+  --spacing-tight: var(--theme-space-tight);
+  --spacing-nudge: var(--theme-space-nudge);
+  --spacing-rule: var(--theme-space-rule);
+  --spacing-cluster: var(--theme-space-cluster);
+  --spacing-stack: var(--theme-space-stack);
+  --spacing-section: var(--theme-space-section);
+  --spacing-modal-body: var(--theme-space-modal-body);
+  --spacing-modal-footer: var(--theme-space-modal-footer);
+  --spacing-modal-close: var(--theme-space-modal-close);
+  --spacing-field-x: var(--theme-space-field-x);
+  --spacing-field-y: var(--theme-space-field-y);
+  --spacing-field-trail: var(--theme-space-field-trail);
+  --spacing-action-x: var(--theme-space-action-x);
+  --spacing-prefs-x: var(--theme-space-prefs-x);
+  --spacing-prefs-y: var(--theme-space-prefs-y);
+  --spacing-prefs-bottom: var(--theme-space-prefs-bottom);
+  --spacing-prefs-save: var(--theme-space-prefs-save);
+
+  --container-lead: var(--p-measure-lead);
+  --container-prefs: var(--p-measure-prefs);
+  --container-copy: var(--p-measure-copy);
+  --container-wide: var(--p-measure-wide);
+  --container-account: var(--p-measure-account);
+  --container-site: var(--p-measure-site);
+  --container-modal: var(--p-measure-modal);
+  --container-bubble: var(--p-measure-bubble);
+
+  --shadow-composer: var(--theme-shadow-composer);
+  --shadow-modal: var(--theme-shadow-modal);
+
+  --default-font-family: var(--theme-font);
+  --default-mono-font-family: var(--theme-font);
+}
+
+@utility size-caret {
+  width: var(--theme-size-caret);
+  height: 1em;
+}
+
+@utility size-dot {
+  width: var(--theme-size-dot);
+  height: var(--theme-size-dot);
+}
+
+@utility size-icon-sm {
+  width: var(--theme-size-icon-sm);
+  height: var(--theme-size-icon-sm);
+}
+
+@utility size-icon {
+  width: var(--theme-size-icon);
+  height: var(--theme-size-icon);
+}
+
+@utility size-control {
+  width: var(--theme-size-control);
+  height: var(--theme-size-control);
+}
+
+@utility size-avatar-lg {
+  width: var(--theme-size-avatar-lg);
+  height: var(--theme-size-avatar-lg);
+}
+
+@utility w-account-nav {
+  width: var(--theme-size-account-nav);
+}
+
+@utility w-account-label {
+  width: var(--theme-size-account-label);
+}
+
+@utility h-account {
+  height: var(--theme-size-account);
+}
+
+@utility h-control {
+  height: var(--theme-size-control);
+}
+
+@utility stroke-icon {
+  stroke-width: var(--theme-stroke-icon);
+}
+
+@utility stroke-strong {
+  stroke-width: var(--theme-stroke-strong);
+}
+
+@utility z-overlay {
+  z-index: var(--theme-z-overlay);
+}
+
+@utility duration-fade {
+  transition-duration: var(--theme-duration-fade);
+}
+
+@utility duration-quick {
+  transition-duration: var(--theme-duration-quick);
+}
+
+@utility ease-gmail {
+  transition-timing-function: var(--theme-ease-out);
+}
+
+@utility scale-press {
+  scale: var(--theme-scale-press);
+}
+
+@utility animate-rise {
+  animation: gmail-rise var(--theme-duration-quick) var(--theme-ease-out);
+}
+
+@keyframes gmail-rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--p-space-1);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@utility max-w-bubble {
+  max-width: var(--p-measure-bubble);
+}
+
+@utility h-hairline {
+  height: var(--theme-size-hairline);
+}
+
+@utility w-hairline {
+  width: var(--theme-size-hairline);
+}
+
+@utility pin-modal-close {
+  position: absolute;
+  top: var(--theme-space-modal-close);
+  right: var(--theme-space-modal-close);
+}
+
+@utility min-h-prefs {
+  min-height: var(--theme-size-prefs);
+}
+
+@utility max-h-dialog {
+  max-height: var(--p-measure-dialog);
+}
+
+@utility w-menu {
+  width: var(--p-measure-modal);
+}
+
+@utility pin-user-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+}
+
+@utility font-gmail {
+  font-family: var(--theme-gmail-font);
+}
+
+@utility w-gmail-nav {
+  width: var(--theme-size-gmail-nav);
+}
+
+@utility w-gmail-rail {
+  width: var(--theme-size-gmail-rail);
+}
+
+@utility h-gmail-bar {
+  height: var(--theme-size-gmail-bar);
+}
+
+@utility h-gmail-search {
+  height: var(--theme-size-gmail-search);
+}
+
+@utility w-gmail-compose {
+  width: var(--theme-size-gmail-compose);
+}
+
+@utility h-gmail-compose {
+  height: var(--theme-size-gmail-compose-h);
+}
+
+@utility size-gmail-avatar {
+  width: var(--theme-size-gmail-avatar);
+  height: var(--theme-size-gmail-avatar);
+}
+
+@utility size-gmail-tool {
+  width: var(--theme-size-gmail-tool);
+  height: var(--theme-size-gmail-tool);
+}
+
+@utility size-gmail-mark {
+  width: var(--theme-size-gmail-mark);
+  height: var(--theme-size-gmail-mark);
+}
+
+@utility size-gmail-logo {
+  width: var(--theme-size-gmail-logo-w);
+  height: var(--theme-size-gmail-logo-h);
+}
+
+@utility grid-gmail {
+  display: grid;
+  grid-template-columns: var(--theme-size-gmail-nav) minmax(0, 1fr) var(--theme-size-gmail-rail);
+  grid-template-rows: var(--theme-size-gmail-bar) minmax(0, 1fr);
+}
