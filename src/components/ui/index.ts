@@ -1,6 +1,7 @@
 export { Button, ButtonAnchor, ButtonLink } from "./button";
 export { Canvas, Cluster, Container, Stack } from "./container";
 export { Heading } from "./heading";
+export { Dropdown } from "./dropdown";
 export { FieldLabel, Input, PrefsTextarea, Textarea } from "./field";
 export { Modal, ModalFooterNote } from "./modal";
 export { Badge, Pill } from "./pill";

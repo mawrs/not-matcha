@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ContentFooter } from "@/components/content-footer";
-import { CountryLinks } from "@/components/country-links";
-import { JobList } from "@/components/job-list";
-import { RoleComposer } from "@/components/role-composer";
-import { Canvas, Container, Heading, Text } from "@/components/ui";
+import { RoleListing } from "@/components/role-listing";
 import { jobCategories } from "@/lib/data";
 import { listingsFor, resolveRole } from "@/lib/jobs";
 
@@ -38,30 +34,6 @@ export default async function RoleJobsPage({
   const { role } = await params;
   const resolved = resolveRole(role);
   if (!resolved) notFound();
-  const jobs = listingsFor(role);
 
-  return (
-    <Canvas>
-      <Container>
-        <Heading>Remote {resolved.label} Jobs</Heading>
-        <Text tone="subtle" className="mt-2">
-          {resolved.description}
-        </Text>
-        <div className="mt-6">
-          <RoleComposer
-            title="Describe your next role, cut the noise"
-            placeholder={`Remote ${resolved.label.toLowerCase()} roles...`}
-            animate={false}
-          />
-        </div>
-        <div className="mt-6">
-          <CountryLinks role={role} />
-        </div>
-        <div className="mt-8">
-          <JobList jobs={jobs} />
-        </div>
-        <ContentFooter />
-      </Container>
-    </Canvas>
-  );
+  return <RoleListing role={resolved.label} jobs={listingsFor(role)} />;
 }

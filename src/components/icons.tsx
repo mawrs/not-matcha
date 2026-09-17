@@ -169,6 +169,39 @@ export function DotsIcon() {
   );
 }
 
+export function ChevronDownIcon({ open = false }: { open?: boolean }) {
+  return (
+    <svg
+      className={cn(
+        "size-icon-sm shrink-0 text-fg-faint stroke-icon transition-transform",
+        open && "rotate-180",
+      )}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+export function CheckIcon() {
+  return (
+    <svg
+      className="size-icon-sm shrink-0 stroke-icon text-fg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 export function GoogleIcon() {
   return (
     <svg className="size-icon-sm" viewBox="0 0 24 24">
