@@ -238,84 +238,98 @@ export const featuredCompanies = [
   {
     slug: "viktor",
     name: "Viktor",
+    website: "https://viktor.ai",
     blurb:
       "The generalist AI employee that lives in Slack and Teams. Not a tool, a hire.",
   },
   {
     slug: "bending-spoons",
     name: "Bending Spoons",
+    website: "https://bendingspoons.com",
     blurb:
       "The Milan tech company behind Evernote, WeTransfer, Vimeo, Komoot and Remini. Impossible. Maybe.",
   },
   {
     slug: "posthog",
     name: "PostHog",
+    website: "https://posthog.com",
     blurb:
       "The open source Product OS built by product engineers, for product engineers: analytics, session replay, feature flags and more in one platform.",
   },
   {
     slug: "ghost",
     name: "Ghost",
+    website: "https://ghost.org",
     blurb:
       "The nonprofit, open source publishing platform for independent writers and publishers. Fully remote, 4-day week, no investors.",
   },
   {
     slug: "narvar",
     name: "Narvar",
+    website: "https://narvar.com",
     blurb:
       "The post-purchase experience platform behind delivery tracking, returns and proactive notifications for Nike, Sephora and 1,500+ other retail brands.",
   },
   {
     slug: "vantaca",
     name: "Vantaca",
+    website: "https://vantaca.com",
     blurb:
       "The AI-first platform powering HOA and community association management, now a Wilmington, NC unicorn after acquiring HOAi.",
   },
   {
     slug: "hostie",
     name: "Hostie",
+    website: "https://hostie.ai",
     blurb:
       "The AI virtual concierge that answers a restaurant's phones, texts and reservations so the front of house never misses a call.",
   },
   {
     slug: "plus-ai",
     name: "Plus AI",
+    website: "https://plusai.com",
     blurb:
       "The AI presentation copilot built into PowerPoint and Google Slides, with over two million installs and customers from Google to Nvidia.",
   },
   {
     slug: "helply",
     name: "Helply",
+    website: "https://helply.com",
     blurb:
       "The AI-native support platform for B2B SaaS, built by the team that bootstrapped Groove to $5M ARR.",
   },
   {
     slug: "desktop-commander",
     name: "Desktop Commander",
+    website: "https://desktopcommander.app",
     blurb:
       "Maker of the open source MCP that gives AI direct access to your computer's files and terminal.",
   },
   {
     slug: "powernaut",
     name: "Powernaut",
+    website: "https://powernaut.com",
     blurb:
       "The Ghent startup building an Open Virtual Power Plant to orchestrate Europe's batteries, solar and EVs.",
   },
   {
     slug: "2501-ai",
     name: "2501.ai",
+    website: "https://2501.ai",
     blurb:
       "The Paris and New York startup building autonomous AI agents that detect and fix IT infrastructure incidents, not just alert on them.",
   },
   {
     slug: "clever-benefits",
     name: "Clever Benefits",
+    website: "https://cleverbenefits.com",
     blurb:
       "The Scottsdale, Arizona benefits technology company behind Clever Health, Clever RX and the Agent Login broker portal.",
   },
   {
     slug: "orderly",
     name: "Orderly",
+    website: "https://orderly.mx",
     blurb:
       "Administrative and invoicing software for Mexican professional-services businesses, from creative agencies to law and engineering firms.",
   },

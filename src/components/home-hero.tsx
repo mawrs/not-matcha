@@ -74,39 +74,44 @@ function TestimonialCarousel() {
   }, []);
 
   return (
-    <div className="relative mt-8 mb-8 [mask-image:linear-gradient(to_right,transparent,black_4rem,black_calc(100%-4rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_4rem,black_calc(100%-4rem),transparent)]">
-      <div
-        ref={scrollerRef}
-        onPointerEnter={() => {
-          pausedRef.current = true;
-        }}
-        onPointerLeave={() => {
-          pausedRef.current = false;
-        }}
-        className="flex gap-8 overflow-x-auto py-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {loopedTestimonials.map((person, i) => (
-          <div
-            key={`${person.name}-${i}`}
-            className="flex w-[calc((100%-2rem)/1.5)] shrink-0 items-start gap-3"
-          >
-            <Image
-              src={person.image}
-              alt=""
-              width={48}
-              height={48}
-              className="size-avatar-lg shrink-0 rounded-full object-cover"
-            />
-            <div className="min-w-0 text-left">
-              <Text size="body" tone="muted">
-                “{person.quote}”
-              </Text>
-              <Text size="caption" tone="faint" className="mt-tight">
-                {person.name} · {person.role} · {person.location}
-              </Text>
+    <div className="mt-footer mb-8">
+      <Heading as="h3" variant="section" align="center">
+        What our customers have said about us
+      </Heading>
+      <div className="relative [mask-image:linear-gradient(to_right,transparent,black_4rem,black_calc(100%-4rem),transparent)] [-webkit-mask-image:linear-gradient(to_right,transparent,black_4rem,black_calc(100%-4rem),transparent)]">
+        <div
+          ref={scrollerRef}
+          onPointerEnter={() => {
+            pausedRef.current = true;
+          }}
+          onPointerLeave={() => {
+            pausedRef.current = false;
+          }}
+          className="flex gap-8 overflow-x-auto py-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {loopedTestimonials.map((person, i) => (
+            <div
+              key={`${person.name}-${i}`}
+              className="flex w-[calc((100%-2rem)/1.5)] shrink-0 items-start gap-3"
+            >
+              <Image
+                src={person.image}
+                alt=""
+                width={48}
+                height={48}
+                className="size-avatar-lg shrink-0 rounded-full object-cover"
+              />
+              <div className="min-w-0 text-left">
+                <Text size="body" tone="muted">
+                  “{person.quote}”
+                </Text>
+                <Text size="caption" tone="faint" className="mt-tight">
+                  {person.name} · {person.role} · {person.location}
+                </Text>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

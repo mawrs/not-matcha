@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Text, Textarea } from "@/components/ui";
 import { typewriterExamples } from "@/lib/data";
+import { useChat } from "./chat-context";
 import { ArrowUpIcon } from "./icons";
-import { ChatOverlay } from "./chat-overlay";
 
 type Props = {
   title?: string;
@@ -22,8 +22,8 @@ export function RoleComposer({
   const [forward, setForward] = useState(true);
   const [value, setValue] = useState("");
   const [focused, setFocused] = useState(false);
-  const [chatting, setChatting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { openChat } = useChat();
   const example = typewriterExamples[exampleIndex];
 
   const tick = useCallback(() => {
@@ -50,21 +50,12 @@ export function RoleComposer({
   useEffect(() => tick(), [tick]);
 
   const submit = () => {
-    if (value.trim()) setChatting(true);
+    const next = value.trim();
+    if (!next) return;
+    openChat(next);
+    setValue("");
+    setFocused(false);
   };
-
-  if (chatting) {
-    return (
-      <ChatOverlay
-        initialMessage={value.trim()}
-        onClose={() => {
-          setChatting(false);
-          setValue("");
-          setFocused(false);
-        }}
-      />
-    );
-  }
 
   return (
     <div className="relative rounded-composer bg-brand p-1 shadow-composer">

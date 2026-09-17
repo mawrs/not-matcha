@@ -187,6 +187,39 @@ export function ChevronDownIcon({ open = false }: { open?: boolean }) {
   );
 }
 
+export function SparklesIcon() {
+  return (
+    <svg
+      className="size-icon-sm shrink-0 stroke-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 3.5 13.5 9 19 10.5 13.5 12 12 17.5 10.5 12 5 10.5 10.5 9 12 3.5Z" />
+      <path d="M18.5 15.5 19.2 18 21.5 18.7 19.2 19.4 18.5 21.9 17.8 19.4 15.5 18.7 17.8 18 18.5 15.5Z" />
+    </svg>
+  );
+}
+
+export function ExternalLinkIcon() {
+  return (
+    <svg
+      className="size-icon-sm shrink-0 stroke-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14 5h5v5" />
+      <path d="M19 5 10 14" />
+      <path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" />
+    </svg>
+  );
+}
+
 export function CheckIcon() {
   return (
     <svg
