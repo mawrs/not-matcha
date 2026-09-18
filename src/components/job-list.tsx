@@ -80,7 +80,7 @@ function ActionTip({ children }: { children: ReactNode }) {
   );
 }
 
-function JobCard({ job }: { job: Job }) {
+function JobCard({ job, compact }: { job: Job; compact?: boolean }) {
   const { openChat } = useChat();
   const company = getCompany(job.companySlug);
   const chips = job.chips ?? [job.salary];
@@ -89,50 +89,54 @@ function JobCard({ job }: { job: Job }) {
 
   return (
     <article className="group relative rounded-card border border-border transition-colors hover:border-fg-faint">
-      <div className="pointer-events-none absolute top-4 right-4 z-10 flex items-center gap-1">
-        <button
-          type="button"
-          aria-label="More like this"
-          className={actionClass()}
-          onClick={() => openChat(moreLikeThisPrompt(job, blurb))}
-        >
-          <SparklesIcon />
-          <ActionTip>More like this</ActionTip>
-        </button>
-        {website ? (
-          <a
-            href={website}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Visit website"
-            className={actionClass(true)}
+      {!compact ? (
+        <div className="pointer-events-none absolute top-4 right-4 z-10 flex items-center gap-1">
+          <button
+            type="button"
+            aria-label="More like this"
+            className={actionClass()}
+            onClick={() => openChat(moreLikeThisPrompt(job, blurb))}
           >
-            <ExternalLinkIcon />
-            <ActionTip>Visit website</ActionTip>
-          </a>
-        ) : null}
-      </div>
-      <Link href={`/companies/${job.companySlug}`} className="block p-4">
+            <SparklesIcon />
+            <ActionTip>More like this</ActionTip>
+          </button>
+          {website ? (
+            <a
+              href={website}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit website"
+              className={actionClass(true)}
+            >
+              <ExternalLinkIcon />
+              <ActionTip>Visit website</ActionTip>
+            </a>
+          ) : null}
+        </div>
+      ) : null}
+      <Link href={`/companies/${job.companySlug}`} className={compact ? "block p-3" : "block p-4"}>
         <div className="flex items-start justify-between gap-2">
           <div className="flex min-w-0 items-start gap-3">
-            <LogoMark slug={job.companySlug} />
+            {!compact ? <LogoMark slug={job.companySlug} /> : null}
             <div className="min-w-0">
               <h3 className="text-body font-emphasis text-fg">
                 {job.title} at {job.company}
               </h3>
-              {blurb ? (
+              {!compact && blurb ? (
                 <Text size="caption" tone="faint" className="mt-0.5">
                   {blurb}
                 </Text>
               ) : null}
             </div>
           </div>
-          <time className="mt-0.5 shrink-0 text-caption text-fg-faint transition-opacity duration-quick ease-gmail group-hover:opacity-0 group-focus-within:opacity-0">
-            {job.posted}
-          </time>
+          {!compact ? (
+            <time className="mt-0.5 shrink-0 text-caption text-fg-faint transition-opacity duration-quick ease-gmail group-hover:opacity-0 group-focus-within:opacity-0">
+              {job.posted}
+            </time>
+          ) : null}
         </div>
         <div className="mt-2 flex flex-wrap gap-1">
-          {chips.map((chip) => (
+          {(compact ? chips.slice(0, 2) : chips).map((chip) => (
             <span
               key={chip}
               className="rounded bg-surface-muted px-1.5 py-0.5 text-caption text-fg-subtle"
@@ -141,7 +145,7 @@ function JobCard({ job }: { job: Job }) {
             </span>
           ))}
         </div>
-        {job.summary ? (
+        {!compact && job.summary ? (
           <Text size="caption" tone="subtle" className="mt-2">
             {job.summary}
           </Text>
@@ -154,7 +158,7 @@ function JobCard({ job }: { job: Job }) {
   );
 }
 
-export function JobList({ jobs }: { jobs: Job[] }) {
+export function JobList({ jobs, compact }: { jobs: Job[]; compact?: boolean }) {
   if (jobs.length === 0) {
     return (
       <Text tone="subtle" align="center">
@@ -165,12 +169,13 @@ export function JobList({ jobs }: { jobs: Job[] }) {
   }
 
   return (
-    <ul className="m-0 list-none space-y-3 p-0">
+    <ul className={cn("m-0 list-none p-0", compact ? "space-y-2" : "space-y-3")}>
       {jobs.map((job) => (
         <li key={job.id}>
-          <JobCard job={job} />
+          <JobCard job={job} compact={compact} />
         </li>
       ))}
     </ul>
   );
 }
+

@@ -384,8 +384,17 @@
   scale: var(--theme-scale-press);
 }
 
-@utility animate-rise {
-  animation: gmail-rise var(--theme-duration-quick) var(--theme-ease-out);
+@utility animate-match-bar {
+  animation: match-bar 4s var(--theme-ease-out) forwards;
+}
+
+@keyframes match-bar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 @keyframes gmail-rise {

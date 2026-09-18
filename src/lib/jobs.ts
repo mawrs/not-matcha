@@ -96,4 +96,79 @@ export function filterJobs(
   });
 }
 
+const stop = new Set([
+  "the",
+  "and",
+  "for",
+  "looking",
+  "with",
+  "that",
+  "this",
+  "from",
+  "have",
+  "want",
+  "based",
+  "please",
+  "just",
+  "into",
+  "your",
+  "what",
+  "kind",
+  "company",
+  "size",
+  "medium",
+  "authorized",
+  "work",
+  "role",
+  "roles",
+  "year",
+  "yearly",
+  "level",
+]);
+
+function roleHint(text: string) {
+  if (/design/.test(text)) return /design|ux|ui/;
+  if (/engineer|developer|fullstack|full stack/.test(text)) return /engineer|developer/;
+  if (/market/.test(text)) return /market/;
+  if (/sales|account executive/.test(text)) return /sales|account/;
+  if (/product manager|\bpm\b/.test(text)) return /product manager|\bpm\b/;
+  return null;
+}
+
+export function matchJobs(prefs: string) {
+  const text = prefs.toLowerCase();
+  const tokens = text
+    .split(/[^a-z0-9+]+/)
+    .filter((token) => token.length > 2 && !stop.has(token));
+
+  const scored = sampleJobs.map((job) => {
+    const hay =
+      `${job.title} ${job.company} ${job.category} ${job.summary ?? ""} ${job.location} ${job.chips?.join(" ") ?? ""}`.toLowerCase();
+    let score = 0;
+    for (const token of tokens) {
+      if (hay.includes(token)) score += 1;
+    }
+    if (/design/.test(text) && /design/.test(hay)) score += 4;
+    if (/engineer/.test(text) && /engineer/.test(hay)) score += 3;
+    if (/designer/.test(text) && /designer/.test(hay)) score += 5;
+    if (/product/.test(text) && /product/.test(hay)) score += 2;
+    if (/\b(senior|sr)\b/.test(text) && /senior/.test(hay)) score += 2;
+    if (/remote/.test(text) && /remote/.test(hay)) score += 1;
+    return { job, score };
+  });
+
+  const hint = roleHint(text);
+  const ranked = scored
+    .filter((item) => {
+      if (item.score <= 0) return false;
+      if (!hint) return true;
+      const hay = `${item.job.title} ${item.job.category}`.toLowerCase();
+      return hint.test(hay);
+    })
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.job);
+
+  return ranked.length > 0 ? ranked : sampleJobs;
+}
+
 export { sampleJobs };
