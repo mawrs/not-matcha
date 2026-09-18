@@ -1,11 +1,15 @@
 import {
+  CHAT_SIMILAR_JOB_PROMPT,
   CHAT_SYSTEM_PROMPT,
   fallbackTurn,
   normalizeTurn,
+  similarJobContext,
+  similarJobTurn,
   type ChatMessage,
 } from "@/lib/chat";
+import { sampleJobs, similarJobs } from "@/lib/jobs";
 
-type Body = { messages?: ChatMessage[] };
+type Body = { messages?: ChatMessage[]; jobId?: string };
 
 export async function POST(request: Request) {
   let body: Body;
@@ -26,7 +30,12 @@ export async function POST(request: Request) {
     return Response.json({ error: "messages required" }, { status: 400 });
   }
 
-  const fallback = fallbackTurn(messages);
+  const job =
+    typeof body.jobId === "string"
+      ? sampleJobs.find((item) => item.id === body.jobId)
+      : undefined;
+  const matches = job ? similarJobs(job) : [];
+  const fallback = job ? similarJobTurn(job, matches) : fallbackTurn(messages);
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return Response.json(fallback);
@@ -44,7 +53,13 @@ export async function POST(request: Request) {
         reasoning_effort: "low",
         response_format: { type: "json_object" },
         messages: [
-          { role: "system", content: CHAT_SYSTEM_PROMPT },
+          {
+            role: "system",
+            content: job ? CHAT_SIMILAR_JOB_PROMPT : CHAT_SYSTEM_PROMPT,
+          },
+          ...(job
+            ? [{ role: "system" as const, content: similarJobContext(job, matches) }]
+            : []),
           ...messages.map((message) => ({
             role: message.role,
             content: message.content,
@@ -61,7 +76,9 @@ export async function POST(request: Request) {
     const data = await response.json();
     const raw = data?.choices?.[0]?.message?.content;
     const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
-    return Response.json(normalizeTurn(parsed, fallback));
+    const turn = normalizeTurn(parsed, fallback);
+    if (job) turn.readyForContact = true;
+    return Response.json(turn);
   } catch {
     return Response.json(fallback);
   }

@@ -49,12 +49,12 @@ function LogoMark({ slug }: { slug: string }) {
 }
 
 function moreLikeThisPrompt(job: Job, blurb: string) {
+  const tags = job.chips?.join(" · ") ?? job.salary;
   return [
-    "Show me more jobs like this one:",
-    "",
+    "Show me more jobs like this one.",
     `${job.title} at ${job.company}`,
     blurb,
-    job.chips?.join(" · ") ?? job.salary,
+    `Tags: ${tags}`,
     job.summary,
     job.location,
   ]
@@ -80,22 +80,78 @@ function ActionTip({ children }: { children: ReactNode }) {
   );
 }
 
-function JobCard({ job, compact }: { job: Job; compact?: boolean }) {
+export function JobCard({
+  job,
+  compact,
+  preview,
+}: {
+  job: Job;
+  compact?: boolean;
+  preview?: boolean;
+}) {
   const { openChat } = useChat();
   const company = getCompany(job.companySlug);
   const chips = job.chips ?? [job.salary];
   const blurb = job.blurb ?? company?.blurb ?? "";
   const website = company?.website;
+  const showActions = !compact && !preview;
+
+  const inner = (
+    <>
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex min-w-0 items-start gap-3">
+          {!compact ? <LogoMark slug={job.companySlug} /> : null}
+          <div className="min-w-0">
+            <h3 className="text-body font-emphasis text-fg">
+              {job.title} at {job.company}
+            </h3>
+            {!compact && blurb ? (
+              <Text size="caption" tone="faint" className="mt-0.5">
+                {blurb}
+              </Text>
+            ) : null}
+          </div>
+        </div>
+        {!compact ? (
+          <time className="mt-0.5 shrink-0 text-caption text-fg-faint transition-opacity duration-quick ease-gmail group-hover:opacity-0 group-focus-within:opacity-0">
+            {job.posted}
+          </time>
+        ) : null}
+      </div>
+      <div className="mt-2 flex flex-wrap gap-1">
+        {(compact ? chips.slice(0, 2) : chips).map((chip) => (
+          <span
+            key={chip}
+            className="rounded bg-surface-muted px-1.5 py-0.5 text-caption text-fg-subtle"
+          >
+            {chip}
+          </span>
+        ))}
+      </div>
+      {!compact && job.summary ? (
+        <Text size="caption" tone="subtle" className="mt-2">
+          {job.summary}
+        </Text>
+      ) : null}
+      <Text size="caption" tone="faint" className="mt-2">
+        {job.location}
+      </Text>
+    </>
+  );
 
   return (
     <article className="group relative rounded-card border border-border transition-colors hover:border-fg-faint">
-      {!compact ? (
+      {showActions ? (
         <div className="pointer-events-none absolute top-4 right-4 z-10 flex items-center gap-1">
           <button
             type="button"
             aria-label="More like this"
             className={actionClass()}
-            onClick={() => openChat(moreLikeThisPrompt(job, blurb))}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              openChat(moreLikeThisPrompt(job, blurb), job);
+            }}
           >
             <SparklesIcon />
             <ActionTip>More like this</ActionTip>
@@ -114,46 +170,13 @@ function JobCard({ job, compact }: { job: Job; compact?: boolean }) {
           ) : null}
         </div>
       ) : null}
-      <Link href={`/companies/${job.companySlug}`} className={compact ? "block p-3" : "block p-4"}>
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex min-w-0 items-start gap-3">
-            {!compact ? <LogoMark slug={job.companySlug} /> : null}
-            <div className="min-w-0">
-              <h3 className="text-body font-emphasis text-fg">
-                {job.title} at {job.company}
-              </h3>
-              {!compact && blurb ? (
-                <Text size="caption" tone="faint" className="mt-0.5">
-                  {blurb}
-                </Text>
-              ) : null}
-            </div>
-          </div>
-          {!compact ? (
-            <time className="mt-0.5 shrink-0 text-caption text-fg-faint transition-opacity duration-quick ease-gmail group-hover:opacity-0 group-focus-within:opacity-0">
-              {job.posted}
-            </time>
-          ) : null}
-        </div>
-        <div className="mt-2 flex flex-wrap gap-1">
-          {(compact ? chips.slice(0, 2) : chips).map((chip) => (
-            <span
-              key={chip}
-              className="rounded bg-surface-muted px-1.5 py-0.5 text-caption text-fg-subtle"
-            >
-              {chip}
-            </span>
-          ))}
-        </div>
-        {!compact && job.summary ? (
-          <Text size="caption" tone="subtle" className="mt-2">
-            {job.summary}
-          </Text>
-        ) : null}
-        <Text size="caption" tone="faint" className="mt-2">
-          {job.location}
-        </Text>
-      </Link>
+      {preview ? (
+        <div className={compact ? "p-3" : "p-4"}>{inner}</div>
+      ) : (
+        <Link href={`/companies/${job.companySlug}`} className={compact ? "block p-3" : "block p-4"}>
+          {inner}
+        </Link>
+      )}
     </article>
   );
 }

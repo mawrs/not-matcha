@@ -1,3 +1,5 @@
+import type { Job } from "./data";
+
 export type ChatMessage = { role: "user" | "assistant"; content: string };
 export type ChatTurn = { reply: string; readyForContact: boolean };
 
@@ -74,7 +76,7 @@ How to collect:
 - Ask for whatever is still missing. React to what they actually said in the opening sentence, then bullet the rest.
 - Even a single follow-up must be a bullet, not an inline question.
 - If they ask what you mean, explain in one or two sentences, then continue with the same bullet format. readyForContact must be false.
-- If they pasted a job or asked for similar roles, note the listing, then collect THEIR constraints.
+- If they pasted a job as text without a structured listing, note it, then collect THEIR constraints.
 - If the first message is a greeting or too vague, skip the small talk and ask.
 - Do not ask for name, email, LinkedIn, resume, or phone. Do not mention those.
 - Do not invent jobs or claim you already found matches.
@@ -197,5 +199,66 @@ export function normalizeTurn(value: unknown, fallback: ChatTurn): ChatTurn {
   return {
     reply,
     readyForContact: record.readyForContact === true,
+  };
+}
+
+export const CHAT_SIMILAR_JOB_PROMPT = `You are a calm, experienced career advisor for a remote-startup matching service.
+
+The user tapped "More like this" on a listing. They want nearby roles, not a preference interview. Do not ask questions this turn. Do not ask for LinkedIn, email, name, or phone.
+
+You will receive the source listing (including its tags) and nearby listings already matched from those tags. Use only that set. Do not invent jobs, companies, pay, or tags.
+
+Return JSON only:
+{"reply": string, "readyForContact": true}
+
+Voice:
+- Direct, even, professional. Not a cheerleader, intern, or sales bot.
+- Ban: "great question", "love that", "awesome", "amazing", "perfect!", "nice!", "got it!", "hi there", exclamation marks, emoji, and stacked affirmations.
+
+Reply in 2-4 sentences:
+1. Name the source role and company, and call out the tags that define the search (pay, team size, stage, location).
+2. Say you pulled nearby listings that share those tags.
+3. You may name at most two matched companies from the provided list.
+readyForContact must be true.`;
+
+function listingBlock(job: Job) {
+  const tags = job.chips?.join(" · ") ?? job.salary;
+  return [
+    `${job.title} at ${job.company}`,
+    `Tags: ${tags}`,
+    job.location,
+    job.summary,
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+export function similarJobContext(job: Job, matches: Job[]) {
+  const nearby =
+    matches.length === 0
+      ? "(none)"
+      : matches
+          .map((item, index) => `${index + 1}. ${listingBlock(item)}`)
+          .join("\n\n");
+  return [
+    "Source listing:",
+    listingBlock(job),
+    "",
+    "Nearby listings already matched from its tags:",
+    nearby,
+  ].join("\n");
+}
+
+export function similarJobTurn(job: Job, matches: Job[]): ChatTurn {
+  const tags = job.chips?.length ? job.chips.join(", ") : job.salary;
+  const named = matches
+    .slice(0, 2)
+    .map((item) => `${item.title} at ${item.company}`);
+  const extra = named.length
+    ? ` Nearby fits include ${named.join(" and ")}.`
+    : "";
+  return {
+    reply: `${job.title} at ${job.company} is tagged ${tags}, ${job.location}. Pulling listings that share that pay band, team size, and stage.${extra}`,
+    readyForContact: true,
   };
 }

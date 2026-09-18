@@ -171,4 +171,105 @@ export function matchJobs(prefs: string) {
   return ranked.length > 0 ? ranked : sampleJobs;
 }
 
+function stageOf(job: Job) {
+  const text = (job.chips ?? []).join(" ").toLowerCase();
+  if (/nonprofit/.test(text)) return "nonprofit";
+  if (/unicorn/.test(text)) return "unicorn";
+  if (/pre-?seed/.test(text)) return "pre-seed";
+  if (/\bseed\b/.test(text)) return "seed";
+  if (/series\s*a/.test(text)) return "series-a";
+  if (/series\s*b/.test(text)) return "series-b";
+  if (/series\s*c/.test(text)) return "series-c";
+  return null;
+}
+
+function teamBucket(size: number | null) {
+  if (size == null) return null;
+  if (size <= 20) return "1-20";
+  if (size <= 50) return "21-50";
+  if (size <= 200) return "51-200";
+  return "201+";
+}
+
+function roleFamily(job: Job) {
+  const hay = `${job.title} ${job.category}`.toLowerCase();
+  if (job.category === "internship" || /\bintern\b/.test(hay)) return "intern";
+  if (/design/.test(hay)) return "design";
+  if (/engineer|developer|new-grad|new grad/.test(hay)) return "eng";
+  if (/market/.test(hay)) return "marketing";
+  if (/sales|account executive|\bsdr\b/.test(hay)) return "sales";
+  if (/product manager|\bpm\b|head of product/.test(hay)) return "pm";
+  if (/recruit/.test(hay)) return "recruit";
+  if (/success|support/.test(hay)) return "support";
+  return job.category;
+}
+
+function titleTokens(title: string) {
+  return title
+    .toLowerCase()
+    .split(/[^a-z0-9+]+/)
+    .filter((token) => token.length > 2 && !stop.has(token));
+}
+
+const tagStop = new Set([...stop, "team", "year", "total", "funding", "backed"]);
+
+function tagTokens(job: Job) {
+  return (job.chips ?? [])
+    .join(" ")
+    .toLowerCase()
+    .split(/[^a-z0-9+]+/)
+    .filter((token) => token.length > 2 && !tagStop.has(token) && !/^\d+$/.test(token));
+}
+
+export function similarJobs(job: Job, limit = 6) {
+  const sourceStage = stageOf(job);
+  const sourceTeam = teamBucket(teamSizeOf(job));
+  const sourcePay = salaryUsd(job);
+  const sourceTitle = new Set(titleTokens(job.title));
+
+  const scored = sampleJobs
+    .filter((candidate) => candidate.id !== job.id)
+    .map((candidate) => {
+      let score = 0;
+      if (candidate.category === job.category) score += 12;
+      if (candidate.region === job.region) score += 3;
+      if (candidate.companySlug === job.companySlug) score += 1;
+
+      const stage = stageOf(candidate);
+      if (sourceStage && stage === sourceStage) score += 5;
+
+      const team = teamBucket(teamSizeOf(candidate));
+      if (sourceTeam && team === sourceTeam) score += 4;
+
+      const pay = salaryUsd(candidate);
+      if (sourcePay && pay) {
+        const ratio = Math.min(sourcePay, pay) / Math.max(sourcePay, pay);
+        if (ratio >= 0.75) score += 4;
+        else if (ratio >= 0.6) score += 2;
+      }
+
+      for (const token of titleTokens(candidate.title)) {
+        if (sourceTitle.has(token)) score += 2;
+      }
+
+      const sourceTags = new Set(tagTokens(job));
+      for (const token of tagTokens(candidate)) {
+        if (sourceTags.has(token)) score += 2;
+      }
+
+      return { job: candidate, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  const family = roleFamily(job);
+  const sameFamily = scored.filter((item) => roleFamily(item.job) === family);
+  const ranked = (sameFamily.length > 0 ? sameFamily : scored)
+    .slice(0, limit)
+    .map((item) => item.job);
+
+  if (ranked.length > 0) return ranked;
+  return sampleJobs.filter((candidate) => candidate.id !== job.id).slice(0, limit);
+}
+
 export { sampleJobs };

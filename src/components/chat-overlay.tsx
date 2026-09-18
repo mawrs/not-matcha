@@ -5,12 +5,15 @@ import { Button, Text, Textarea } from "@/components/ui";
 import { fallbackTurn, type ChatMessage, type ChatTurn } from "@/lib/chat";
 import { cn } from "@/lib/cn";
 import type { Job } from "@/lib/data";
-import { matchJobs } from "@/lib/jobs";
+import { matchJobs, similarJobs } from "@/lib/jobs";
 import { ArrowUpIcon, CloseIcon } from "./icons";
 import { Logo } from "./header";
-import { JobList } from "./job-list";
+import { JobCard, JobList } from "./job-list";
 
-type OverlayMessage = ChatMessage & { listingsLink?: boolean };
+type OverlayMessage = ChatMessage & {
+  listingsLink?: boolean;
+  job?: Job;
+};
 
 type Phase =
   | "chatting"
@@ -32,12 +35,12 @@ const linkedInLabels = [
   "Prioritizing the strongest fits",
 ];
 
-async function requestTurn(history: ChatMessage[]): Promise<ChatTurn> {
+async function requestTurn(history: ChatMessage[], jobId?: string): Promise<ChatTurn> {
   try {
     const response = await fetch("/api/open/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: history }),
+      body: JSON.stringify({ messages: history, jobId }),
     });
     if (!response.ok) return fallbackTurn(history);
     const data = await response.json();
@@ -82,13 +85,15 @@ function MatchingStatus({ labels }: { labels: string[] }) {
 
 export function ChatOverlay({
   initialMessage,
+  initialJob,
   onClose,
 }: {
   initialMessage: string;
+  initialJob?: Job;
   onClose?: () => void;
 }) {
   const [messages, setMessages] = useState<OverlayMessage[]>([
-    { role: "user", content: initialMessage },
+    { role: "user", content: initialMessage, job: initialJob },
   ]);
   const [draft, setDraft] = useState("");
   const [thinking, setThinking] = useState(true);
@@ -130,6 +135,20 @@ export function ChatOverlay({
   };
 
   const applyTurn = (history: ChatMessage[], turn: ChatTurn) => {
+    if (initialJob) {
+      const matches = similarJobs(initialJob);
+      matchesRef.current = matches;
+      setMessages([
+        { role: "user", content: initialMessage, job: initialJob },
+        ...history.slice(1),
+        { role: "assistant", content: turn.reply, listingsLink: true },
+      ]);
+      setPhase("awaitingLinkedIn");
+      setThinking(false);
+      setTimeout(() => inputRef.current?.focus(), 100);
+      return;
+    }
+
     const next = turn.reply
       ? [...history, { role: "assistant" as const, content: turn.reply }]
       : history;
@@ -159,6 +178,7 @@ export function ChatOverlay({
     if (phase === "reviewingLinkedIn") {
       const id = setTimeout(() => {
         preferTop5Ref.current = true;
+        const top = matchesRef.current.slice(0, 5);
         setMessages((prev) => [
           ...prev,
           {
@@ -167,9 +187,7 @@ export function ChatOverlay({
               "We've updated your listings to show the top 5 you're most likely to hear back from.",
           },
         ]);
-        setResults((current) =>
-          current ? matchesRef.current.slice(0, 5) : current,
-        );
+        setResults((current) => (current ? top : current));
         setPhase("complete");
       }, MATCH_MS);
       return () => clearTimeout(id);
@@ -197,7 +215,7 @@ export function ChatOverlay({
     ];
 
     (async () => {
-      const turn = await requestTurn(history);
+      const turn = await requestTurn(history, initialJob?.id);
       if (id !== turnRef.current) return;
       applyTurn(history, turn);
     })();
@@ -205,7 +223,7 @@ export function ChatOverlay({
     return () => {
       turnRef.current += 1;
     };
-  }, [initialMessage]);
+  }, [initialMessage, initialJob]);
 
   const revealListings = () => {
     const jobs = matchesRef.current;
@@ -263,7 +281,19 @@ export function ChatOverlay({
         <section className={cn(panel, "min-h-0 w-full flex-1")}>
           <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto px-4 py-10">
             <div className="mx-auto w-full max-w-copy space-y-4">
-            {messages.map((message, i) => (
+            {messages.map((message, i) => {
+              if (message.job) {
+                return (
+                  <div key={i} className="space-y-2">
+                    <Text size="caption" tone="faint">
+                      More like this
+                    </Text>
+                    <JobCard job={message.job} preview />
+                  </div>
+                );
+              }
+
+              return (
               <div
                 key={i}
                 className={cn(
@@ -295,7 +325,8 @@ export function ChatOverlay({
                   ) : null}
                 </div>
               </div>
-            ))}
+              );
+            })}
               {(phase === "matching" || phase === "reviewingLinkedIn") && (
                 <div className="flex justify-start">
                   <MatchingStatus
